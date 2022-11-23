@@ -22,3 +22,7 @@ from wxcloudrun import views
 
 # 加载配置
 app.config.from_object('config')
+
+@app.route('/create_img')
+def create_img():
+    return 'hello!'
