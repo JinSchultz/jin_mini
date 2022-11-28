@@ -14,7 +14,7 @@ RUN apk add ca-certificates
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tencent.com/g' /etc/apk/repositories \
 # 安装python3
 && apk add --update --no-cache python3 py3-pip \
-&& apk add apt-get \
+&& apk add --no-cache musl-dev linux-headers g++ \
 && rm -rf /var/cache/apk/*
 
 # 拷贝当前项目到/app目录下（.dockerignore中文件除外）
@@ -23,8 +23,6 @@ COPY . /app
 # 设定当前的工作目录
 WORKDIR /app
 
-RUN apt-get -y install libc-dev
-RUN apt-get -y install build-essential
 # 安装依赖到指定的/install文件夹
 # 选用国内镜像源以提高下载速度
 RUN pip config set global.index-url http://mirrors.cloud.tencent.com/pypi/simple \
