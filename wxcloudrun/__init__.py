@@ -25,3 +25,4 @@ app.config.from_object('config')
 
 #设置编码
 app.config['JSON_AS_ASCII'] = False
+# app.run('127.0.0.1',10086)
