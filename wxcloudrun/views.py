@@ -69,7 +69,7 @@ def get_count():
 
 @app.route('/create_img',methods=['POST'])
 def create_img():
-    data = json.loads(request.get_json())
+    data = request.get_json()
     text = data.get('text','啥')
     conf = data.get('conf')
     img_local_path = words_to_gif(text,conf)
