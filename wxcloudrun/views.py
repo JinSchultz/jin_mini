@@ -3,9 +3,11 @@ from flask import render_template, request
 from run import app
 from wxcloudrun.dao import delete_counterbyid, query_counterbyid, insert_counter, update_counterbyid
 from wxcloudrun.model import Counters
-from wxcloudrun.response import make_succ_empty_response, make_succ_response, make_err_response
-
-
+from wxcloudrun.response import make_succ_empty_response, make_succ_response, make_err_response,\
+    make_img_response
+from wxcloudrun.utils import words_to_gif,upload
+import json
+import os
 @app.route('/')
 def index():
     """
@@ -64,3 +66,15 @@ def get_count():
     """
     counter = Counters.query.filter(Counters.id == 1).first()
     return make_succ_response(0) if counter is None else make_succ_response(counter.count)
+
+@app.route('/image')
+def create_img():
+    data = json.dumps(request.get_json())
+    text = data.get('text','啥')
+    conf = data.get('conf')
+    img_local_path = words_to_gif(text,conf)
+    if len(img_local_path)==0:
+        return make_err_response('配置不正确')
+    file_id = upload(img_local_path)
+    os.remove(img_local_path)
+    return make_succ_response(file_id)
