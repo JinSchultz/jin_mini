@@ -22,6 +22,8 @@ COPY . /app
 # 设定当前的工作目录
 WORKDIR /app
 
+RUN apt-get -y install libc-dev
+RUN apt-get -y install build-essential
 # 安装依赖到指定的/install文件夹
 # 选用国内镜像源以提高下载速度
 RUN pip config set global.index-url http://mirrors.cloud.tencent.com/pypi/simple \
