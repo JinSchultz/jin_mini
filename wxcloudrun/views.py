@@ -7,7 +7,7 @@ from wxcloudrun.response import make_succ_empty_response, make_succ_response, ma
     make_img_response
 from wxcloudrun.utils import words_to_gif,upload
 import json
-import os
+# import os
 @app.route('/')
 def index():
     """
@@ -75,7 +75,7 @@ def create_img():
     img_local_path = words_to_gif(text,conf)
     if len(img_local_path)==0:
         return make_err_response('配置不正确')
-    file_url = upload(img_local_path)
-    os.remove(img_local_path)
-    return make_succ_response(file_url)
-    # return make_img_response(img_local_path)
+    # file_url = upload(img_local_path)
+    # os.remove(img_local_path)
+    # return make_succ_response(file_url)
+    return make_img_response(img_local_path)
