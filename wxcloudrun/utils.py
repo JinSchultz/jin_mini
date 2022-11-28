@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
-
+import json
+import requests
 import math
 from PIL import Image,ImageFont,ImageDraw
 import numpy as np
+import uuid
 # 16进制颜色格式颜色转换为RGB格式
 
 def Hex_to_RGBA(hex):
@@ -83,7 +85,16 @@ def get_word_by_gradient(text,c_from,c_to):
     back = draw_back(wid,hei,c_from,c_to)
     new_ = words * back
     im = Image.fromarray(new_)
-    return  im
+    return im
+
+def get_word_by_custom(text,arr):
+    words = CreateMutiLinesPic(text)
+    wid = words.shape[1]
+    hei = words.shape[0]
+    back = Image.fromarray(arr).resize((wid,hei))
+    new_ = words * back
+    im = Image.fromarray(new_)
+    return im
 
 def words_to_gif(text,conf):
     frames = []
@@ -92,9 +103,13 @@ def words_to_gif(text,conf):
     if conf['type'] == 1:
         word = get_word_by_gradient(text,conf['c_from'],conf['c_to'])
         file_name = hash(text+conf['c_from']+conf['c_to'])
-    else:
+    elif conf['type'] == 2:
         word = get_word_by_pic(text,conf['img'])
         file_name = hash(text+conf['img'].split('/')[-1])
+    else:
+        word = get_word_by_custom(text,conf['arr'])
+        file_name = uuid.uuid1().hex
+    
     star = Image.open('wxcloudrun/img/star1.png').resize((word.width,word.height))
     
     for i in range(5):
@@ -112,11 +127,8 @@ def words_to_gif(text,conf):
     return 'gif/'+str(file_name)+'.gif'
 # conf1 = {'type':1,'c_from':'#f2c3c8','c_to':'#942632'}
 # conf2 = {'type':2,'img':'wxcloudrun/img/g.png'}
-# im_b = words_to_gif(text,conf2)
-
-
-import json
-import requests
+# conf3 = {'type':3,'url':'https://s1.aigei.com/src/img/png/47/47c61edadb5b49d1acc48167443efe41.png?imageMogr2/auto-orient/thumbnail/!99x132r/gravity/Center/crop/99x132/quality/85/%7Cwatermark/3/image/aHR0cHM6Ly9zMS5haWdlaS5jb20vd2F0ZXJtYXJrLzYwLTIucG5nP2U9MTczNTQ4ODAwMCZ0b2tlbj1QN1MyWHB6ZnoxMXZBa0FTTFRrZkhON0Z3LW9PWkJlY3FlSmF4eXBMOnpYaVVCU1Y3SmNxRUUtUTZmTkdGOHVLZ3l2bz0=/dissolve/20/gravity/NorthWest/dx/32/dy/64/ws/0.0/wst/0&e=1735488000&token=P7S2Xpzfz11vAkASLTkfHN7Fw-oOZBecqeJaxypL:Bd_4vzfGPn1TN0Z0gcJ8gcDmvCg='}
+# im_b = words_to_gif(text,conf3)
 
 def upload(filepath):
     #获取token
@@ -139,7 +151,7 @@ def upload(filepath):
         }
     response2 = requests.post(response.json()['url'], files=data2) #此处files提交的为表单数据，不为json数据，json数据或其他数据会报错
 
-    return response.json()["file_id"]
+    return response.json()['url']
 
-# a = upload("gif/-2930320888180611314.gif")
+# a = upload("gif/-505346995794605208.gif")
 # print(a)

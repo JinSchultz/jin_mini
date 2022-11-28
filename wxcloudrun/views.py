@@ -75,6 +75,7 @@ def create_img():
     img_local_path = words_to_gif(text,conf)
     if len(img_local_path)==0:
         return make_err_response('配置不正确')
-    file_id = upload(img_local_path)
+    file_url = upload(img_local_path)
     os.remove(img_local_path)
-    return make_succ_response(file_id)
+    return make_succ_response(file_url)
+    # return make_img_response(img_local_path)
