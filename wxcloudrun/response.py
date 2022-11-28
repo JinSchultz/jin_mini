@@ -19,7 +19,7 @@ def make_err_response(err_msg):
 
 def make_img_response(img_local_path):
     img_stream = ''
-    img_f = open(img_local_path, 'r')
+    img_f = open(img_local_path, 'rb')
     img_stream = img_f.read()
     img_stream = base64.b64encode(img_stream)
     img_f.close()
