@@ -39,9 +39,9 @@ def CreateMutiLinesPic(text):
 
     for i in range(line_count):
         # draw lines
-        draw.text((margin,(fheight)*i), text[i*line_size:(i+1)*line_size], tuple([1,1,1,1]), font,)
-                    # stroke_width=5,stroke_fill='black')
-        draw.text((margin,(fheight)*i), text[i*line_size:(i+1)*line_size], tuple([1,1,1,1]), font,)
+        draw.text((margin,(fheight)*i), text[i*line_size:(i+1)*line_size], tuple([1,1,1,1]), font,
+                    stroke_width=5,stroke_fill='black')
+        # draw.text((margin,(fheight)*i), text[i*line_size:(i+1)*line_size], tuple([1,1,1,1]), font,)
                     # stroke_width=5,stroke_fill='black')
     return np.array(pic,dtype=np.uint8)
 
@@ -116,11 +116,11 @@ def words_to_gif(text,conf):
         star = star.rotate(45*i)
         out = Image.alpha_composite(word,star)
         out = np.array(out)
-        black_pixels = np.where(
-            (out[:, :, 0] == 0) & 
-            (out[:, :, 1] == 0) & 
-            (out[:, :, 2] == 0))
-        out[black_pixels] = [255, 255, 255,255]
+        # black_pixels = np.where(
+        #     (out[:, :, 0] == 0) & 
+        #     (out[:, :, 1] == 0) & 
+        #     (out[:, :, 2] == 0))
+        # out[black_pixels] = [255, 255, 255,255]
         out = Image.fromarray(out)
         frames.append(out)
     frames[0].save('gif/'+str(file_name)+'.gif',save_all=True,append_images=frames[1:],duration=200,loop=0,disposal=2)
@@ -128,7 +128,7 @@ def words_to_gif(text,conf):
 # conf1 = {'type':1,'c_from':'#f2c3c8','c_to':'#942632'}
 # conf2 = {'type':2,'img':'wxcloudrun/img/g.png'}
 # conf3 = {'type':3,'url':'https://s1.aigei.com/src/img/png/47/47c61edadb5b49d1acc48167443efe41.png?imageMogr2/auto-orient/thumbnail/!99x132r/gravity/Center/crop/99x132/quality/85/%7Cwatermark/3/image/aHR0cHM6Ly9zMS5haWdlaS5jb20vd2F0ZXJtYXJrLzYwLTIucG5nP2U9MTczNTQ4ODAwMCZ0b2tlbj1QN1MyWHB6ZnoxMXZBa0FTTFRrZkhON0Z3LW9PWkJlY3FlSmF4eXBMOnpYaVVCU1Y3SmNxRUUtUTZmTkdGOHVLZ3l2bz0=/dissolve/20/gravity/NorthWest/dx/32/dy/64/ws/0.0/wst/0&e=1735488000&token=P7S2Xpzfz11vAkASLTkfHN7Fw-oOZBecqeJaxypL:Bd_4vzfGPn1TN0Z0gcJ8gcDmvCg='}
-# im_b = words_to_gif(text,conf3)
+# im_b = words_to_gif(text,conf2)
 
 def upload(filepath):
     #获取token
